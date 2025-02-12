@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import pages.ProfilePage;
 
-import static io.qameta.allure.Allure.step;
-
 
 public class BookStoreTest extends TestBase {
     private final int BOOK_NO = 0;
@@ -25,32 +23,23 @@ public class BookStoreTest extends TestBase {
 
         BookCollectionResponse collection = BooksApi.requestBookCollection();
 
-        LoginResponseModel authResponse =
-                step("Авторизация через API", AuthorizationApi::login
-                );
-         step("Удаление всех книг из профиля через API", () ->
-                BooksApi.deleteAllBooks(authResponse)
-        );
+        LoginResponseModel authResponse = AuthorizationApi.login();
 
-        step("Добавление новой книги через API", () ->
-                BooksApi.addBook(collection.getBooks()[BOOK_NO].getIsbn(), authResponse.getToken(), authResponse.getUserId())
-        );
-        step("Открытие профиля", () ->
-                profilePage.googleConsent()
-                        .openPage()
-        );
-        step("Проверка, что в коллекции есть книга", () ->
-                profilePage.checkForBook()
-        );
-        step("Удаление книги через UI", () ->
-                profilePage.deleteBook()
-        );
-        step("Подтверждение удаления книги", () ->
-                profilePage.confirmDelete()
-        );
-        step("Проверка, что коллекция пуста", () ->
-                profilePage.checkTableBody(collection.getBooks()[BOOK_NO].getTitle())
-        );
+        BooksApi.deleteAllBooks(authResponse);
+
+        final String isbn = collection.getBooks()[BOOK_NO].getIsbn();
+        BooksApi.addBook(isbn, authResponse.getToken(), authResponse.getUserId());
+
+        profilePage.googleConsent()
+                .openPage();
+
+        profilePage.checkForBook(isbn);
+
+        profilePage.deleteBook();
+
+        profilePage.confirmDelete();
+
+        profilePage.checkTableBody(collection.getBooks()[BOOK_NO].getTitle());
 
     }
 
