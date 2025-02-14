@@ -16,7 +16,6 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TestBase {
-    //public static final String REMOTE_URL = System.getProperty("remoteUrl", "selenoid.autotests.cloud");
 
     @BeforeAll
     static void setup() {
