@@ -7,25 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import static data.Paths.collectionPath;
+import static data.Paths.COLLECTION_PATH;
 import static io.restassured.RestAssured.given;
 import static specs.DemoQaSpec.*;
 
 public class BooksApi {
 
     @Step("Удаление всех книг из профиля через API")
-    public static void deleteAllBooks(LoginResponseModel loginResponse) {
+    public void deleteAllBooks(LoginResponseModel loginResponse) {
         given(requestSpec)
                 .header("Authorization", "Bearer " + loginResponse.getToken())
                 .queryParam("UserId", loginResponse.getUserId())
                 .when()
-                .delete(collectionPath)
+                .delete(COLLECTION_PATH)
                 .then()
                 .spec(responseSpecWithStatusCode204);
     }
 
     @Step("Получение коллекции книг через API")
-    public static BookCollectionResponse requestBookCollection() {
+    public BookCollectionResponse requestBookCollection() {
         return given(requestSpec)
                 .when()
                 .get("/BookStore/v1/Books")
@@ -35,7 +35,7 @@ public class BooksApi {
     }
 
     @Step("Добавление новой книги через API")
-    public static AddBookResponse addBook(String isb, String token, String userId) {
+    public AddBookResponse addBook(String isb, String token, String userId) {
 
         List<IsbnBookModel> books = new ArrayList<>();
         books.add(new IsbnBookModel(isb));
@@ -47,7 +47,7 @@ public class BooksApi {
                 .header("Authorization", "Bearer " + token)
                 .body(bookData)
                 .when()
-                .post(collectionPath)
+                .post(COLLECTION_PATH)
                 .then()
                 .spec(responseSpecWithStatusCode201)
                 .extract().as(AddBookResponse.class);

@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
-import static data.Paths.profilePath;
+import static data.Paths.PROFILE_PATH;
 
 
 public class ProfilePage {
@@ -15,13 +15,12 @@ public class ProfilePage {
             deleteButton = $("#delete-record-undefined"),
             okButton = $("#closeSmallModal-ok"),
             consentBanner = $(".fc-consent-root"),
-            emptyRows = $(".rt-noData"),
             tableBody = $(".ReactTable");
 
     @Step("Открытие профиля")
     public ProfilePage openPage() {
-        open(profilePath);
-        //    mainHeader.shouldHave(text("Profile"));
+        open(PROFILE_PATH);
+
         return this;
     }
     @Step("Проверка баннера")
@@ -37,7 +36,7 @@ public class ProfilePage {
 
     @Step("Проверка, что в коллекции есть книга {isbn}")
     public ProfilePage checkForBook(String isbn) {
-        emptyRows.shouldNotBe(visible);
+        tableBody.shouldHave(text(isbn));
         return this;
     }
 
@@ -55,7 +54,6 @@ public class ProfilePage {
     }
     @Step("Проверка, что в коллекции нет книги {isbn}")
     public ProfilePage checkTableBody(String isbn) {
-        open(profilePath);
         tableBody.shouldNotHave(text(isbn));
         return this;
     }

@@ -15,20 +15,21 @@ import pages.ProfilePage;
 public class BookStoreTest extends TestBase {
     private final int BOOK_NO = 0;
     ProfilePage profilePage = new ProfilePage();
+    BooksApi booksApi = new BooksApi();
 
     @Test
     @Tag("books_test")
     @WithLogin
     void successDeleteBookFromProfileTest() {
 
-        BookCollectionResponse collection = BooksApi.requestBookCollection();
+        BookCollectionResponse collection = booksApi.requestBookCollection();
 
-        LoginResponseModel authResponse = AuthorizationApi.login();
+        LoginResponseModel authResponse = new AuthorizationApi().login();
 
-        BooksApi.deleteAllBooks(authResponse);
+        booksApi.deleteAllBooks(authResponse);
 
         final String isbn = collection.getBooks()[BOOK_NO].getIsbn();
-        BooksApi.addBook(isbn, authResponse.getToken(), authResponse.getUserId());
+        booksApi.addBook(isbn, authResponse.getToken(), authResponse.getUserId());
 
         profilePage.googleConsent()
                 .openPage();
