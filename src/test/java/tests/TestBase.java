@@ -16,7 +16,7 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TestBase {
-    public static final String REMOTE_URL = System.getProperty("remoteUrl", "selenoid.autotests.cloud");
+    //public static final String REMOTE_URL = System.getProperty("remoteUrl", "selenoid.autotests.cloud");
 
     @BeforeAll
     static void setup() {
@@ -25,7 +25,7 @@ public class TestBase {
         Configuration.baseUrl = "https://demoqa.com";
         RestAssured.baseURI = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
-        Configuration.remote = "https://user1:1234@" + REMOTE_URL + "/wd/hub";
+        Configuration.remote = System.getProperty("remoteUrl");
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
