@@ -34,9 +34,9 @@ public class ProfilePage {
         return this;
     }
 
-    @Step("Проверка, что в коллекции есть книга {isbn}")
-    public ProfilePage checkForBook(String isbn) {
-        tableBody.shouldHave(text(isbn));
+    @Step("Проверка, что в коллекции есть книга {title}")
+    public ProfilePage checkForBook(String title) {
+        $("[id='see-book-"+title+"']").shouldBe(visible);
         return this;
     }
 
@@ -52,9 +52,9 @@ public class ProfilePage {
         Selenide.switchTo().parentFrame();
         return this;
     }
-    @Step("Проверка, что в коллекции нет книги {isbn}")
-    public ProfilePage checkTableBody(String isbn) {
-        tableBody.shouldNotHave(text(isbn));
+    @Step("Проверка, что в коллекции нет книги {title}")
+    public ProfilePage checkTableBody(String title) {
+        $("[id='see-book-"+title+"']").shouldNot(visible);
         return this;
     }
 

@@ -29,23 +29,19 @@ public class BookStoreTest extends TestBase {
         booksApi.deleteAllBooks(authResponse);
 
         final String isbn = collection.getBooks()[BOOK_NO].getIsbn();
+        final String title = collection.getBooks()[BOOK_NO].getTitle();
         booksApi.addBook(isbn, authResponse.getToken(), authResponse.getUserId());
 
         profilePage.googleConsent()
                 .openPage();
 
-        profilePage.checkForBook(isbn);
+        profilePage.checkForBook(title);
 
         profilePage.deleteBook();
 
         profilePage.confirmDelete();
 
-        profilePage.checkTableBody(collection.getBooks()[BOOK_NO].getTitle());
-
+        profilePage.checkTableBody(title);
     }
 
-
-
-    }
-
-
+}
